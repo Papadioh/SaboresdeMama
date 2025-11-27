@@ -14,11 +14,13 @@
 
             <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
 
-            <Label Text="Ingredientes:"
+            <Label Text="Insumos necesarios:"
                    FontSize="18"
-                   FontAttributes="Bold" />
+                   FontAttributes="Bold"
+                   Margin="0,10,0,0" />
 
-            <Label x:Name="IngredientesLabel" />
+            <VerticalStackLayout x:Name="InsumosListLayout"
+                                 Spacing="5" />
 
             <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
 

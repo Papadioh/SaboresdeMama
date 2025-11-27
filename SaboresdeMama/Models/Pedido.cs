@@ -12,6 +12,12 @@ namespace SaboresdeMama.Models
 
         public string ClienteNombre { get; set; }
 
+        public string ClienteId { get; set; }
+
+        public string ClienteTelefono { get; set; }
+
+        public string ClienteDireccion { get; set; }
+
         public DateTime FechaEntrega { get; set; }
 
         public DateTime FechaCreacion { get; set; }

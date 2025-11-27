@@ -28,6 +28,8 @@
                             <VerticalStackLayout Grid.Column="0" Spacing="5">
 
                                 <Label Text="{Binding ClienteNombre}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="{Binding ClienteTelefono, StringFormat='Tel: {0}'}" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                <Label Text="{Binding ClienteDireccion, StringFormat='Dir: {0}'}" FontSize="12" TextColor="{StaticResource Gray500}" />
 
                                 <Label Text="{Binding DescripcionProducto}" />
                                 <Label Text="{Binding FechaCompletado, StringFormat='Completado: {0:dd MMMM yyyy}'}" />

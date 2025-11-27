@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SaboresdeMama.Models"
+             x:Class="SaboresdeMama.MisPedidosPage"
+             Title="Mis pedidos">
+
+    <ContentPage.BackgroundColor>
+        <Color>#FFFEF9</Color>
+    </ContentPage.BackgroundColor>
+
+    <RefreshView x:Name="PedidosRefreshView" Refreshing="OnRefreshing">
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <Label Text="Resumen de mis pedidos"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+
+                <CollectionView x:Name="MisPedidosCollectionView"
+                                SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <Label Text="Aún no has realizado pedidos."
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource Gray500}" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Pedido">
+                            <Frame Padding="15" Margin="0,5"
+                                   BackgroundColor="{StaticResource White}"
+                                   BorderColor="{StaticResource PastelBlue}"
+                                   CornerRadius="12">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding DescripcionProducto}"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Gray700}" />
+                                    <Label Text="{Binding DetallesPedido}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Gray500}"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding FechaEntrega, StringFormat='Entrega: {0:dd/MM/yyyy}'}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Gray500}" />
+                                    <Label Text="{Binding Estado}"
+                                           FontAttributes="Bold"
+                                           TextColor="{Binding EstadoColor}" />
+                                    <Label Text="{Binding Total, StringFormat='Total: ${0:F2}'}"
+                                           FontSize="14"
+                                           TextColor="{StaticResource Primary}" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+
+</ContentPage>
+

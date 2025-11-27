@@ -29,6 +29,13 @@
 
                     <Entry x:Name="ConfirmPasswordEntry" IsPassword="True" Placeholder="Confirmar Contraseña" />
 
+                    <Entry x:Name="TelefonoEntry" Placeholder="Teléfono" Keyboard="Telephone" />
+
+                    <Editor x:Name="DireccionEditor"
+                            Placeholder="Dirección"
+                            AutoSize="TextChanges"
+                            HeightRequest="100" />
+
                     <Button x:Name="RegisterButton"
                             Text="Crear Cuenta"
                             Clicked="OnRegisterClicked"

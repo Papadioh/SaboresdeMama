@@ -18,7 +18,9 @@ public partial class RegisterPage : ContentPage
         // 1. Validaciones
         if (string.IsNullOrWhiteSpace(NombreEntry.Text) ||
             string.IsNullOrWhiteSpace(UsernameEntry.Text) ||
-            string.IsNullOrWhiteSpace(PasswordEntry.Text))
+            string.IsNullOrWhiteSpace(PasswordEntry.Text) ||
+            string.IsNullOrWhiteSpace(TelefonoEntry.Text) ||
+            string.IsNullOrWhiteSpace(DireccionEditor.Text))
         {
             MostrarError("Por favor, completa todos los campos.");
             return;
@@ -26,7 +28,7 @@ public partial class RegisterPage : ContentPage
 
         if (PasswordEntry.Text != ConfirmPasswordEntry.Text)
         {
-            MostrarError("Las contraseñas no coinciden.");
+            MostrarError("Las contraseï¿½as no coinciden.");
             return;
         }
 
@@ -39,7 +41,7 @@ public partial class RegisterPage : ContentPage
 
             if (usuarioExistente != null)
             {
-                MostrarError("Ese usuario ya está registrado.");
+                MostrarError("Ese usuario ya estï¿½ registrado.");
                 IsBusy(false);
                 return;
             }
@@ -51,16 +53,18 @@ public partial class RegisterPage : ContentPage
                 Username = UsernameEntry.Text.Trim(),
                 Password = PasswordEntry.Text.Trim(),
                 TipoUsuario = "Cliente", // Por defecto creamos Clientes
-                FechaRegistro = DateTime.Now
+                FechaRegistro = DateTime.Now,
+                Telefono = TelefonoEntry.Text?.Trim(),
+                Direccion = DireccionEditor.Text?.Trim()
             };
 
             // 4. Guardar usuario
             await _databaseService.AddUsuarioAsync(nuevoUsuario);
 
             IsBusy(false);
-            await DisplayAlert("¡Bienvenido!", "Cuenta creada exitosamente. Por favor inicia sesión.", "OK");
+            await DisplayAlert("ï¿½Bienvenido!", "Cuenta creada exitosamente. Por favor inicia sesiï¿½n.", "OK");
 
-            // Volver atrás
+            // Volver atrï¿½s
             await Navigation.PopAsync();
         }
         catch (Exception ex)

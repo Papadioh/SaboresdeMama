@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.PerfilClientePage"
+             Title="Mi Perfil">
+
+    <ContentPage.BackgroundColor>
+        <Color>#FFFEF9</Color>
+    </ContentPage.BackgroundColor>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Información del perfil"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <Label Text="Correo (no editable)" />
+            <Entry x:Name="CorreoEntry"
+                   IsEnabled="False" />
+
+            <Label Text="Nombre completo" />
+            <Entry x:Name="NombreEntry"
+                   Placeholder="Ej: María Pérez" />
+
+            <Label Text="Número de teléfono" />
+            <Entry x:Name="TelefonoEntry"
+                   Placeholder="Ej: +56 9 1234 5678"
+                   Keyboard="Telephone" />
+
+            <Label Text="Dirección" />
+            <Editor x:Name="DireccionEditor"
+                    Placeholder="Ej: Calle Falsa 123, Ciudad"
+                    AutoSize="TextChanges"
+                    HeightRequest="120" />
+
+            <Button Text="Guardar cambios"
+                    x:Name="GuardarButton"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Clicked="OnGuardarClicked" />
+
+            <Label x:Name="EstadoLabel"
+                   TextColor="{StaticResource PastelPink}"
+                   IsVisible="False" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+

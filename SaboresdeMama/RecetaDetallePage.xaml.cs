@@ -35,8 +35,8 @@ public partial class RecetaDetallePage : ContentPage
             {
                 // Todos estos errores desaparecerán
                 NombreLabel.Text = Receta.Nombre ?? "";
-                IngredientesLabel.Text = Receta.Ingredientes ?? "";
                 ProcedimientoLabel.Text = Receta.Procedimiento ?? "";
+                ActualizarListaInsumos();
 
                 // Verificar disponibilidad de insumos
                 if (DisponibilidadLabel != null)
@@ -73,6 +73,34 @@ public partial class RecetaDetallePage : ContentPage
             {
                 System.Diagnostics.Debug.WriteLine($"Error cargando datos de receta: {ex.Message}");
             }
+        }
+    }
+
+    private void ActualizarListaInsumos()
+    {
+        if (InsumosListLayout == null)
+            return;
+
+        InsumosListLayout.Children.Clear();
+
+        if (Receta?.InsumosNecesarios == null || Receta.InsumosNecesarios.Count == 0)
+        {
+            InsumosListLayout.Children.Add(new Label
+            {
+                Text = "No se configuraron insumos específicos para esta receta.",
+                FontSize = 12,
+                TextColor = Colors.Gray
+            });
+            return;
+        }
+
+        foreach (var insumo in Receta.InsumosNecesarios)
+        {
+            InsumosListLayout.Children.Add(new Label
+            {
+                Text = $"{insumo.InsumoNombre}: {insumo.CantidadNecesaria:F2} {insumo.Unidad}",
+                FontSize = 14
+            });
         }
     }
 }

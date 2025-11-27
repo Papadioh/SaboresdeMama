@@ -5,8 +5,10 @@ namespace SaboresdeMama.Models
         public string Id { get; set; } // ID generado por Firebase o GUID
         public string Nombre { get; set; } // Nombre completo del cliente
         public string Username { get; set; } // Correo o nombre de usuario
-        public string Password { get; set; } // Contraseña
+        public string Password { get; set; } // ContraseÃ±a
         public string TipoUsuario { get; set; } // "Cliente" o "Admin"
         public DateTime FechaRegistro { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
     }
 }

@@ -37,7 +37,7 @@ public partial class GestionPedidosPage : ContentPage
         {
             var todosLosPedidos = await _databaseService.GetPedidosAsync();
             var pedidosPendientes = todosLosPedidos?
-                                        .Where(p => p.Estado == "Pendiente" || p.Estado == "Aceptado")
+                                        .Where(p => p.Estado == "Pendiente")
                                         .OrderBy(p => p.FechaEntrega)
                                         .ToList();
 

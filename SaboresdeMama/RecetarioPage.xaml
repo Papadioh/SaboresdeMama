@@ -33,8 +33,6 @@
 
                             <VerticalStackLayout Grid.Column="0" Spacing="5">
                                 <Label Text="{Binding Nombre}" FontSize="18" FontAttributes="Bold" />
-                                <Label Text="Ingredientes:" FontAttributes="Italic" />
-                                <Label Text="{Binding Ingredientes}" MaxLines="2" LineBreakMode="TailTruncation" />
                                 <Label Text="Procedimiento:" FontAttributes="Italic" />
                                 <Label Text="{Binding Procedimiento}" MaxLines="2" LineBreakMode="TailTruncation" />
                             </VerticalStackLayout>

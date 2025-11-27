@@ -11,6 +11,8 @@
             <Frame Padding="15" CornerRadius="10" BorderColor="LightGray" BackgroundColor="White">
                 <VerticalStackLayout Spacing="10">
                     <Label x:Name="ClienteLabel" FontSize="20" FontAttributes="Bold" />
+                    <Label x:Name="TelefonoLabel" FontSize="14" TextColor="{StaticResource Gray500}" />
+                    <Label x:Name="DireccionLabel" FontSize="14" TextColor="{StaticResource Gray500}" />
                     
                     <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
 

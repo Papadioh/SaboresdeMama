@@ -71,6 +71,20 @@
             Route="ProductosPage" />
     </FlyoutItem>
 
+    <FlyoutItem x:Name="MisPedidosMenu" Title="Mis pedidos" IsVisible="False">
+        <ShellContent
+            Title="Mis pedidos"
+            ContentTemplate="{DataTemplate local:MisPedidosPage}"
+            Route="MisPedidosPage" />
+    </FlyoutItem>
+
+    <FlyoutItem x:Name="PerfilMenu" Title="Mi perfil" IsVisible="False">
+        <ShellContent
+            Title="Mi perfil"
+            ContentTemplate="{DataTemplate local:PerfilClientePage}"
+            Route="PerfilClientePage" />
+    </FlyoutItem>
+
     <!-- Botón de Cerrar Sesión en el menú lateral -->
     <MenuItem x:Name="LogoutMenuItem"
               Text="Cerrar Sesión"

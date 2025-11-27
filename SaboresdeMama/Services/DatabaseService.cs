@@ -82,7 +82,9 @@ namespace SaboresdeMama.Services
                     { "Username", usuario.Username ?? "" },
                     { "Password", usuario.Password ?? "" },
                     { "TipoUsuario", usuario.TipoUsuario ?? "Cliente" },
-                    { "FechaRegistro", DateTime.Now }
+                    { "Telefono", usuario.Telefono ?? "" },
+                    { "Direccion", usuario.Direccion ?? "" },
+                    { "FechaRegistro", usuario.FechaRegistro == default ? DateTime.Now : usuario.FechaRegistro }
                 };
 
                 usuario.Id = await FirebaseService.AddDocumentAsync("usuarios", dict);
@@ -112,6 +114,44 @@ namespace SaboresdeMama.Services
             {
                 System.Diagnostics.Debug.WriteLine($"Error obteniendo usuario de Firebase: {ex.Message}");
                 return null;
+            }
+        }
+
+        public async Task UpdateUsuarioAsync(Usuario usuario)
+        {
+            await InitializeAsync();
+
+            if (usuario == null || string.IsNullOrEmpty(usuario.Id))
+            {
+                System.Diagnostics.Debug.WriteLine("UpdateUsuarioAsync: usuario inválido.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                System.Diagnostics.Debug.WriteLine("Firebase no configurado. No se puede actualizar usuario remotamente.");
+                return;
+            }
+
+            try
+            {
+                var dict = new Dictionary<string, object>
+                {
+                    { "Nombre", usuario.Nombre ?? "" },
+                    { "Username", usuario.Username ?? "" },
+                    { "Password", usuario.Password ?? "" },
+                    { "TipoUsuario", usuario.TipoUsuario ?? "Cliente" },
+                    { "Telefono", usuario.Telefono ?? "" },
+                    { "Direccion", usuario.Direccion ?? "" },
+                    { "FechaRegistro", usuario.FechaRegistro == default ? DateTime.Now : usuario.FechaRegistro }
+                };
+
+                await FirebaseService.UpdateDocumentAsync("usuarios", usuario.Id, dict);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error actualizando usuario: {ex.Message}");
+                throw;
             }
         }
 
@@ -215,6 +255,9 @@ namespace SaboresdeMama.Services
                 {
                     { "DescripcionProducto", pedido.DescripcionProducto ?? "" },
                     { "ClienteNombre", pedido.ClienteNombre ?? "" },
+                    { "ClienteId", pedido.ClienteId ?? "" },
+                    { "ClienteTelefono", pedido.ClienteTelefono ?? "" },
+                    { "ClienteDireccion", pedido.ClienteDireccion ?? "" },
                     { "FechaEntrega", pedido.FechaEntrega },
                     { "FechaCreacion", pedido.FechaCreacion },
                     { "Estado", pedido.Estado ?? "" },
@@ -247,6 +290,9 @@ namespace SaboresdeMama.Services
                 {
                     { "DescripcionProducto", pedido.DescripcionProducto ?? "" },
                     { "ClienteNombre", pedido.ClienteNombre ?? "" },
+                    { "ClienteId", pedido.ClienteId ?? "" },
+                    { "ClienteTelefono", pedido.ClienteTelefono ?? "" },
+                    { "ClienteDireccion", pedido.ClienteDireccion ?? "" },
                     { "FechaEntrega", pedido.FechaEntrega },
                     { "FechaCreacion", pedido.FechaCreacion },
                     { "Estado", pedido.Estado ?? "" },
@@ -685,8 +731,11 @@ namespace SaboresdeMama.Services
             {
                 var dict = new Dictionary<string, object>
                 {
+                    { "PedidoId", venta.PedidoId ?? string.Empty },
                     { "DescripcionProducto", venta.DescripcionProducto ?? "" },
                     { "ClienteNombre", venta.ClienteNombre ?? "" },
+                    { "ClienteTelefono", venta.ClienteTelefono ?? "" },
+                    { "ClienteDireccion", venta.ClienteDireccion ?? "" },
                     { "Total", venta.Total },
                     { "FechaCompletado", venta.FechaCompletado }
                 };
@@ -704,6 +753,16 @@ namespace SaboresdeMama.Services
             await InitializeAsync();
             var ventas = await FirebaseService.GetCollectionAsync<Venta>("ventas");
             return ventas.OrderByDescending(v => v.FechaCompletado).ToList();
+        }
+
+        public async Task<Venta> GetVentaByPedidoIdAsync(string pedidoId)
+        {
+            await InitializeAsync();
+            if (string.IsNullOrEmpty(pedidoId))
+                return null;
+
+            var ventas = await FirebaseService.GetCollectionAsync<Venta>("ventas");
+            return ventas.FirstOrDefault(v => v.PedidoId == pedidoId);
         }
 
         public async Task DeleteVentaAsync(Venta venta)
@@ -899,6 +958,94 @@ namespace SaboresdeMama.Services
                 System.Diagnostics.Debug.WriteLine($"Error en ActualizarCantidadInsumoAsync: {ex.Message}");
                 return false;
             }
+        }
+
+        public async Task<(bool Success, string Message)> CompletarPedidoConVentaAsync(Pedido pedido)
+        {
+            await InitializeAsync();
+
+            if (pedido == null)
+                return (false, "Pedido inválido.");
+
+            if (pedido.Estado == "Completado")
+                return (false, "El pedido ya está marcado como completado.");
+
+            Receta recetaAsociada = null;
+            try
+            {
+                var recetas = await GetRecetasAsync();
+                if (!string.IsNullOrEmpty(pedido.RecetaId))
+                {
+                    recetaAsociada = recetas.FirstOrDefault(r => r.Id == pedido.RecetaId);
+                }
+
+                if (recetaAsociada == null && !string.IsNullOrEmpty(pedido.DescripcionProducto))
+                {
+                    var desc = pedido.DescripcionProducto.ToLower();
+                    recetaAsociada = recetas.FirstOrDefault(r =>
+                        r.Nombre?.ToLower().Contains(desc) == true ||
+                        desc.Contains(r.Nombre?.ToLower() ?? string.Empty));
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error buscando receta para pedido: {ex.Message}");
+            }
+
+            if (recetaAsociada != null && recetaAsociada.InsumosNecesarios != null && recetaAsociada.InsumosNecesarios.Count > 0)
+            {
+                var (disponible, faltantes) = await VerificarDisponibilidadInsumosAsync(recetaAsociada);
+                if (!disponible)
+                {
+                    var faltantesTexto = string.Join("\n", faltantes);
+                    return (false, $"No se puede completar el pedido. Faltan insumos:\n{faltantesTexto}");
+                }
+
+                var restado = await RestarInsumosDeRecetaAsync(recetaAsociada);
+                if (!restado)
+                {
+                    return (false, "No se pudieron restar los insumos del inventario.");
+                }
+            }
+
+            pedido.Estado = "Completado";
+            await UpdatePedidoAsync(pedido);
+
+            var venta = new Venta
+            {
+                PedidoId = pedido.Id,
+                DescripcionProducto = pedido.DescripcionProducto,
+                ClienteNombre = pedido.ClienteNombre,
+                ClienteTelefono = pedido.ClienteTelefono,
+                ClienteDireccion = pedido.ClienteDireccion,
+                Total = pedido.Total,
+                FechaCompletado = DateTime.Now
+            };
+            await AddVentaAsync(venta);
+
+            return (true, "Pedido completado y registrado en ventas.");
+        }
+
+        public async Task<(bool Success, string Message)> RevertirPedidoAAceptadoAsync(Pedido pedido)
+        {
+            await InitializeAsync();
+
+            if (pedido == null)
+                return (false, "Pedido inválido.");
+
+            if (pedido.Estado != "Completado")
+                return (false, "Solo los pedidos completados pueden marcarse como no completados.");
+
+            pedido.Estado = "Aceptado";
+            await UpdatePedidoAsync(pedido);
+
+            var venta = await GetVentaByPedidoIdAsync(pedido.Id);
+            if (venta != null)
+            {
+                await DeleteVentaAsync(venta);
+            }
+
+            return (true, "El pedido volvió al estado 'Aceptado'.");
         }
 
         // Verificar si hay suficientes insumos para una receta

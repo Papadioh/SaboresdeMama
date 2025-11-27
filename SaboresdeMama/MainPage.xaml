@@ -37,7 +37,7 @@
 
             <BoxView HeightRequest="1" Color="{StaticResource Gray300}" Margin="0,10,0,10" />
 
-            <Label Text="Pedidos programados para la fecha:"
+            <Label Text="Pedidos programados (ordenados por fecha):"
                    FontSize="18"
                    FontAttributes="Bold" 
                    TextColor="{StaticResource Gray600}" />
@@ -54,13 +54,45 @@
                     <DataTemplate x:DataType="models:Pedido">
                         <Border StrokeThickness="1" Stroke="{StaticResource PastelBlue}" Padding="15" Margin="0,5" BackgroundColor="{StaticResource White}"
                                 StrokeShape="RoundRectangle 8">
-                            <Grid ColumnDefinitions="3*,*,*">
+                            <Grid ColumnDefinitions="3*,Auto" ColumnSpacing="10">
                                 <VerticalStackLayout Grid.Column="0">
                                     <Label Text="{Binding ClienteNombre}" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                                    <Label Text="{Binding ClienteTelefono, StringFormat='Tel: {0}'}" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                    <Label Text="{Binding ClienteDireccion, StringFormat='Dir: {0}'}" FontSize="12" TextColor="{StaticResource Gray500}" />
                                     <Label Text="{Binding ProductoResumen}" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                    <Label Text="{Binding DetallesPedido}" FontSize="12" TextColor="{StaticResource Gray500}" LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding Estado}" FontAttributes="Bold" TextColor="{Binding EstadoColor}" />
                                 </VerticalStackLayout>
-                                <Label Grid.Column="1" Text="{Binding HoraEntrega}" VerticalOptions="Center" HorizontalOptions="End" TextColor="{StaticResource Primary}" />
-                                <Label Grid.Column="2" Text="{Binding Estado}" VerticalOptions="Center" HorizontalOptions="End" TextColor="{Binding EstadoColor}" FontAttributes="Bold" />
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="6" HorizontalOptions="End" VerticalOptions="Center">
+                                    <Label Text="{Binding HoraEntrega}" FontAttributes="Bold" TextColor="{StaticResource Primary}" HorizontalOptions="End" />
+                                    <Button Text="Pedido listo"
+                                            Padding="10,5"
+                                            BackgroundColor="{StaticResource PastelMint}"
+                                            TextColor="{StaticResource Gray600}"
+                                            Clicked="OnPedidoListoClicked"
+                                            CommandParameter="{Binding .}"
+                                            IsVisible="False">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Estado}" Value="Aceptado">
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Button Text="No completado"
+                                            Padding="10,5"
+                                            BackgroundColor="{StaticResource PastelPink}"
+                                            TextColor="{StaticResource Gray600}"
+                                            Clicked="OnPedidoNoCompletadoClicked"
+                                            CommandParameter="{Binding .}"
+                                            IsVisible="False">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Estado}" Value="Completado">
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </VerticalStackLayout>
                             </Grid>
                         </Border>
                     </DataTemplate>

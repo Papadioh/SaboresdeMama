@@ -22,6 +22,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(EditarProductoPage), typeof(EditarProductoPage));
         Routing.RegisterRoute(nameof(DetallePedidoPage), typeof(DetallePedidoPage));
         Routing.RegisterRoute(nameof(GestionInsumosPage), typeof(GestionInsumosPage));
+        Routing.RegisterRoute(nameof(MisPedidosPage), typeof(MisPedidosPage));
+        Routing.RegisterRoute(nameof(PerfilClientePage), typeof(PerfilClientePage));
 
         ConfigurarMenu();
     }
@@ -39,6 +41,8 @@ public partial class AppShell : Shell
                 GestionInsumosMenu.IsVisible = true;
                 VentasMenu.IsVisible = true;
                 ProductosMenu.IsVisible = false;
+                MisPedidosMenu.IsVisible = false;
+                PerfilMenu.IsVisible = false;
                 CurrentItem = InicioMenu;
                 UsuarioLabel.Text = $"Usuario: {AuthService.UsuarioActual?.Nombre ?? "Admin"}";
             }
@@ -51,6 +55,8 @@ public partial class AppShell : Shell
                 GestionInsumosMenu.IsVisible = false;
                 VentasMenu.IsVisible = false;
                 ProductosMenu.IsVisible = true;
+                MisPedidosMenu.IsVisible = true;
+                PerfilMenu.IsVisible = true;
                 CurrentItem = ProductosMenu;
                 UsuarioLabel.Text = $"Usuario: {AuthService.UsuarioActual?.Nombre ?? "Cliente"}";
             }

@@ -171,7 +171,29 @@ namespace SaboresdeMama
             if (confirmacion)
             {
                 var usuarioActual = AuthService.UsuarioActual;
-                var nombreCliente = usuarioActual?.Nombre ?? "Cliente";
+                if (usuarioActual == null)
+                {
+                    await DisplayAlert("Sesión requerida", "Debes iniciar sesión para realizar un pedido.", "OK");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(usuarioActual.Telefono) || string.IsNullOrWhiteSpace(usuarioActual.Direccion))
+                {
+                    bool irPerfil = await DisplayAlert(
+                        "Perfil incompleto",
+                        "Necesitas registrar tu dirección y teléfono para completar el pedido.",
+                        "Ir a mi perfil",
+                        "Cancelar");
+
+                    if (irPerfil)
+                    {
+                        await Shell.Current.GoToAsync(nameof(PerfilClientePage));
+                    }
+                    return;
+                }
+
+                var nombreCliente = usuarioActual.Nombre ?? "Cliente";
+                var clienteId = usuarioActual.Id;
 
                 foreach (var item in _carrito)
                 {
@@ -195,7 +217,10 @@ namespace SaboresdeMama
 
                 var nuevoPedido = new Pedido
                 {
+                    ClienteId = clienteId,
                     ClienteNombre = nombreCliente,
+                    ClienteTelefono = usuarioActual.Telefono,
+                    ClienteDireccion = usuarioActual.Direccion,
                     DescripcionProducto = descripcionProducto,
                     DetallesPedido = detallesPedido,
                     Total = total,
