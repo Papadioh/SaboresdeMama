@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SaboresdeMama.Models"
+             x:Class="SaboresdeMama.MainPage"
+             Title="Panel de Pedidos">
+
+    <ContentPage.BackgroundColor>
+        <Color>#FFFEF9</Color>
+    </ContentPage.BackgroundColor>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="15">
+
+            <Label Text="🗓️ Pedidos Pendientes por Fecha" 
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Start"
+                   TextColor="{StaticResource Primary}" />
+
+            <Grid ColumnDefinitions="4*,6*">
+                <DatePicker x:Name="DatePickerPedidos" 
+                            Grid.Column="0"
+                            DateSelected="OnDateSelected"
+                            Format="D" 
+                            FontSize="16"
+                            VerticalOptions="Center"
+                            TextColor="{StaticResource Gray600}"/>
+                <Label x:Name="LabelPedidosHoy"
+                       Grid.Column="1"
+                       Text="Cargando..."
+                       FontSize="16"
+                       VerticalOptions="Center"
+                       Padding="10,0,0,0"
+                       TextColor="{StaticResource Gray600}" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="{StaticResource Gray300}" Margin="0,10,0,10" />
+
+            <Label Text="Pedidos programados para la fecha:"
+                   FontSize="18"
+                   FontAttributes="Bold" 
+                   TextColor="{StaticResource Gray600}" />
+
+            <CollectionView x:Name="PedidosCollectionView"
+                            SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="🎉 No hay pedidos programados para esta fecha." 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           TextColor="{StaticResource PastelMint}" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Pedido">
+                        <Border StrokeThickness="1" Stroke="{StaticResource PastelBlue}" Padding="15" Margin="0,5" BackgroundColor="{StaticResource White}"
+                                StrokeShape="RoundRectangle 8">
+                            <Grid ColumnDefinitions="3*,*,*">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding ClienteNombre}" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                                    <Label Text="{Binding ProductoResumen}" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" Text="{Binding HoraEntrega}" VerticalOptions="Center" HorizontalOptions="End" TextColor="{StaticResource Primary}" />
+                                <Label Grid.Column="2" Text="{Binding Estado}" VerticalOptions="Center" HorizontalOptions="End" TextColor="{Binding EstadoColor}" FontAttributes="Bold" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

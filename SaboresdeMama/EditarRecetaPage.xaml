@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.EditarRecetaPage"
+             Title="Editar Receta">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+
+            <Label Text="Nombre de la Receta" />
+            <Entry x:Name="NombreEntry" Placeholder="Ej: Torta de chocolate" />
+
+            <Label Text="Ingredientes (con cantidad y unidad)" />
+            <Editor x:Name="IngredientesEditor"
+                    HeightRequest="200"
+                    AutoSize="Disabled" />
+
+            <Label Text="Procedimiento" />
+            <Editor x:Name="ProcedimientoEditor"
+                    HeightRequest="300"
+                    AutoSize="Disabled" />
+
+            <Button Text="Guardar Cambios"
+                    Clicked="OnGuardarCambiosClicked"
+                    HorizontalOptions="Fill" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

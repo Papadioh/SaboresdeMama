@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SaboresdeMama.Models"
+             x:Class="SaboresdeMama.GestionPedidosPage"
+             Title="Gestión de Pedidos">
+
+    <ContentPage.BackgroundColor>
+        <Color>#FFFEF9</Color>
+    </ContentPage.BackgroundColor>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="📦 Pedidos Pendientes de Revisión" 
+                   FontSize="24" 
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray300}" Margin="0,5,0,10"/>
+
+            <CollectionView x:Name="PedidosCollectionView"
+                            SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="🎉 No hay pedidos pendientes de revisión." 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           FontSize="16"
+                           TextColor="{StaticResource PastelMint}" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Pedido">
+                        <Frame Padding="15" Margin="0,5" CornerRadius="12" BackgroundColor="{StaticResource White}" BorderColor="{StaticResource PastelBlue}">
+                            <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+
+                                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                    <Label Text="{Binding ClienteNombre}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                                    <Label Text="{Binding DescripcionProducto}" MaxLines="2" LineBreakMode="TailTruncation" FontSize="14" TextColor="{StaticResource Gray500}" />
+                                    <Label Text="{Binding FechaCreacion, StringFormat='Recibido: {0:dd/MM/yyyy HH:mm}'}" FontSize="12" TextColor="{StaticResource Primary}" />
+                                    <Label Text="{Binding FechaEntrega, StringFormat='Entrega: {0:dd/MM/yyyy}'}" FontSize="12" TextColor="{StaticResource PastelPink}" />
+                                    <Label Text="{Binding Total, StringFormat='Total: ${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                                    <Label Text="{Binding Estado}" FontSize="12" FontAttributes="Italic" TextColor="{Binding EstadoColor}" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                    <Button Text="Aceptar Pedido" 
+                                            BackgroundColor="{StaticResource PastelMint}" 
+                                            TextColor="{StaticResource Gray600}"
+                                            Clicked="OnCompletarClicked" 
+                                            CommandParameter="{Binding .}" />
+
+                                    <Button Text="Ver Detalles" 
+                                            BackgroundColor="{StaticResource PastelBlue}"
+                                            TextColor="{StaticResource Gray600}"
+                                            Clicked="OnVerDetallesClicked" 
+                                            CommandParameter="{Binding .}" />
+
+                                    <Button Text="Rechazar" 
+                                            BackgroundColor="{StaticResource PastelPink}"
+                                            TextColor="{StaticResource Gray600}"
+                                            Clicked="OnRechazarClicked" 
+                                            CommandParameter="{Binding .}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

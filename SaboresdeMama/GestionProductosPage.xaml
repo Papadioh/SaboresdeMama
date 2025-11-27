@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.GestionProductosPage"
+             Title="Gestión de Productos">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" Padding="10" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <SearchBar x:Name="ProductoSearchBar"
+                       Grid.Column="0"
+                       Placeholder="Buscar producto..."
+                       SearchButtonPressed="OnSearchButtonPressed"
+                       TextChanged="OnSearchTextChanged" />
+
+            <Button x:Name="AddProductoButton"
+                    Grid.Column="1"
+                    Text="Añadir"
+                    WidthRequest="80"
+                    Clicked="OnAddProductoClicked" />
+        </Grid>
+
+        <CollectionView x:Name="ProductosCollectionView" Grid.Row="1" Margin="10,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="15" Margin="5" CornerRadius="10" BorderColor="LightGray">
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                <Label Text="{Binding Nombre}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="{Binding Descripcion}" MaxLines="2" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding Precio, StringFormat='Precio: ${0:F2}'}" FontSize="14" TextColor="Green" />
+                                <Label Text="{Binding Stock, StringFormat='Stock: {0}'}" FontSize="14" TextColor="DarkBlue" />
+                                <Label Text="{Binding Categoria}" FontSize="12" FontAttributes="Italic" TextColor="Gray" />
+                                <Label Text="{Binding InformacionExtra}" MaxLines="1" LineBreakMode="TailTruncation" FontSize="12" TextColor="DarkGray" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                <Button Text="Editar" 
+                                        Clicked="OnEditarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="DarkBlue" />
+
+                                <Button Text="Stock" 
+                                        Clicked="OnGestionarStockClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="Orange" />
+
+                                <Button Text="Borrar" 
+                                        Clicked="OnEliminarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="Red" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>
+

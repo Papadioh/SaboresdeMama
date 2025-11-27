@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.DetallePedidoPage"
+             Title="Detalle del Pedido">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Detalle del Pedido" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <Frame Padding="15" CornerRadius="10" BorderColor="LightGray" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <Label x:Name="ClienteLabel" FontSize="20" FontAttributes="Bold" />
+                    
+                    <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
+
+                    <Label Text="Productos:" FontSize="16" FontAttributes="Bold" />
+                    <Label x:Name="DescripcionLabel" FontSize="14" />
+
+                    <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
+
+                    <Label Text="Detalles:" FontSize="16" FontAttributes="Bold" />
+                    <Label x:Name="DetallesLabel" FontSize="14" />
+
+                    <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
+
+                    <Label Text="Fecha de Creación:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="FechaCreacionLabel" FontSize="14" />
+
+                    <Label Text="Fecha de Entrega:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="FechaEntregaLabel" FontSize="14" />
+
+                    <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
+
+                    <Label Text="Estado:" FontSize="14" FontAttributes="Bold" />
+                    <Label x:Name="EstadoLabel" FontSize="16" FontAttributes="Bold" />
+
+                    <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="0,10" />
+
+                    <Label Text="Total:" FontSize="18" FontAttributes="Bold" />
+                    <Label x:Name="TotalLabel" FontSize="24" FontAttributes="Bold" TextColor="Green" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+

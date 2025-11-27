@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.AgregarRecetaPage"
+             Title="Añadir Nueva Receta">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+
+            <Label Text="Nombre de la Receta" />
+            <Entry x:Name="NombreEntry" Placeholder="Ej: Torta de chocolate" />
+
+            <Label Text="Ingredientes (con cantidad y unidad)" />
+            <Editor x:Name="IngredientesEditor"
+                    Placeholder="Ej:&#10;- 200g Harina&#10;- 100g Azúcar&#10;- 2 Huevos"
+                    HeightRequest="200"
+                    AutoSize="Disabled" />
+
+            <Label Text="Procedimiento" />
+            <Editor x:Name="ProcedimientoEditor"
+                    Placeholder="Ej:&#10;1. Mezclar los ingredientes secos...&#10;2. Batir los huevos..."
+                    HeightRequest="300"
+                    AutoSize="Disabled" />
+
+            <Button Text="Guardar Receta"
+                    Clicked="OnGuardarRecetaClicked"
+                    HorizontalOptions="Fill" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

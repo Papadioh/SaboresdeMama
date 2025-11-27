@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.CarritoPage"
+             Title="Carrito de Compras">
+
+    <Grid RowDefinitions="*, Auto, Auto, Auto">
+        <CollectionView x:Name="CarritoCollectionView" Grid.Row="0" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="15" Margin="5" CornerRadius="12" BorderColor="{StaticResource PastelLavender}" BackgroundColor="{StaticResource White}">
+                        <Grid ColumnDefinitions="*, Auto, Auto, Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                <Label Text="{Binding Producto.Nombre}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="{Binding Producto.Precio, StringFormat='Precio unitario: ${0:F2}'}" FontSize="14" />
+                                <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" FontSize="14" />
+                                <Label Text="{Binding Total, StringFormat='Total: ${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource PastelMint}" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Column="1"
+                                    Text="-"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Clicked="OnDecrementarClicked"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="{StaticResource PastelPink}" 
+                                    TextColor="{StaticResource Gray600}" />
+
+                            <Label Grid.Column="2"
+                                   Text="{Binding Cantidad}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   WidthRequest="40"
+                                   TextColor="{StaticResource Gray600}" />
+
+                            <Button Grid.Column="3"
+                                    Text="+"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Clicked="OnIncrementarClicked"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="{StaticResource PastelMint}"
+                                    TextColor="{StaticResource Gray600}" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Frame Grid.Row="1" Padding="15" Margin="10" BackgroundColor="{StaticResource PastelLavender}" BorderColor="{StaticResource PastelBlue}">
+            <Grid ColumnDefinitions="*, Auto">
+                <Label Grid.Column="0" 
+                       Text="Total:" 
+                       FontSize="20" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray600}" />
+                <Label x:Name="TotalLabel"
+                       Grid.Column="1" 
+                       Text="$0.00" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource PastelMint}" />
+            </Grid>
+        </Frame>
+
+        <Frame Grid.Row="2" Padding="15" Margin="10,5" BackgroundColor="{StaticResource White}" BorderColor="{StaticResource PastelLavender}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="📅 Fecha de Entrega" 
+                       FontSize="18" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray600}" />
+                <Label Text="Seleccione una fecha con al menos 1 semana de antelación" 
+                       FontSize="12" 
+                       TextColor="{StaticResource Gray500}" />
+                <DatePicker x:Name="FechaEntregaPicker"
+                           DateSelected="OnFechaEntregaSelected"
+                           Format="D"
+                           TextColor="{StaticResource Gray600}"
+                           FontSize="16" />
+                <Label x:Name="FechaSeleccionadaLabel"
+                       Text=""
+                       FontSize="14"
+                       TextColor="{StaticResource Primary}"
+                       IsVisible="False" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <Button Grid.Row="3"
+                x:Name="ComprarButton"
+                Text="Realizar Compra"
+                Clicked="OnComprarClicked"
+                BackgroundColor="{StaticResource PastelMint}"
+                TextColor="{StaticResource Gray600}"
+                Margin="10"
+                Padding="0,15"
+                IsEnabled="False" />
+    </Grid>
+
+</ContentPage>
+

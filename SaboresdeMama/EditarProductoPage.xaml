@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.EditarProductoPage"
+             Title="Editar Producto">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Editar Producto" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#5E35B1" />
+
+            <Frame BorderColor="#ADD8E6" CornerRadius="10" Padding="10" BackgroundColor="#F7F7F7">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🖼️ Imagen del Producto" FontAttributes="Bold" TextColor="#333333" />
+
+                    <Image x:Name="ProductoImage"
+                           HeightRequest="150"
+                           Aspect="AspectFit"
+                           BackgroundColor="#F0F8FF"
+                           Source="placeholder_image.png" />
+
+                    <Button Text="Seleccionar/Cambiar Imagen"
+                            Clicked="OnSeleccionarImagenClicked"
+                            BackgroundColor="#B3E0DC"
+                            TextColor="#333333" />
+
+                    <Entry x:Name="ImageURLEntry" IsVisible="False" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Entry x:Name="NombreEntry" Placeholder="Nombre del producto *" />
+            <Button x:Name="GuardarButton"
+                    Text="Guardar Cambios"
+                    Clicked="OnGuardarClicked"
+                    BackgroundColor="#B3E0DC" 
+                    TextColor="#333333"
+                    Padding="0,15" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

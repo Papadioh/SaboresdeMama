@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SaboresdeMama.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SaboresdeMama"
+    Shell.FlyoutBehavior="Flyout">
+
+    <Shell.FlyoutHeader>
+        <Grid Padding="20" BackgroundColor="{StaticResource Primary}">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Sabores de Mamá" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White" />
+                <Label x:Name="UsuarioLabel" 
+                       FontSize="14" 
+                       TextColor="White" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- Menú para Admin -->
+    <FlyoutItem x:Name="InicioMenu" Title="Inicio" IsVisible="False">
+        <ShellContent
+            Title="Inicio"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem x:Name="GestionProductosMenu" Title="Gestión de Productos" IsVisible="False">
+        <ShellContent
+            Title="Gestión de Productos"
+            ContentTemplate="{DataTemplate local:GestionProductosPage}"
+            Route="GestionProductosPage" />
+    </FlyoutItem>
+
+    <FlyoutItem x:Name="GestionPedidosMenu" Title="Gestión de Pedidos" IsVisible="False">
+        <ShellContent
+            Title="Gestión de Pedidos"
+            ContentTemplate="{DataTemplate local:GestionPedidosPage}"
+            Route="GestionPedidosPage" />
+    </FlyoutItem>
+
+    <FlyoutItem x:Name="RecetasMenu" Title="Recetas" IsVisible="False">
+        <ShellContent
+            Title="Recetas"
+            ContentTemplate="{DataTemplate local:RecetarioPage}"
+            Route="RecetarioPage" />
+    </FlyoutItem>
+
+    <FlyoutItem x:Name="VentasMenu" Title="Ventas" IsVisible="False">
+        <ShellContent
+            Title="Ventas"
+            ContentTemplate="{DataTemplate local:VentasPage}"
+            Route="VentasPage" />
+    </FlyoutItem>
+
+    <!-- Menú para Cliente -->
+    <FlyoutItem x:Name="ProductosMenu" Title="Productos" IsVisible="False">
+        <ShellContent
+            Title="Productos"
+            ContentTemplate="{DataTemplate local:ProductosPage}"
+            Route="ProductosPage" />
+    </FlyoutItem>
+
+    <!-- Botón de Cerrar Sesión en el menú lateral -->
+    <MenuItem x:Name="LogoutMenuItem"
+              Text="Cerrar Sesión"
+              Clicked="OnLogoutClicked" />
+
+</Shell>

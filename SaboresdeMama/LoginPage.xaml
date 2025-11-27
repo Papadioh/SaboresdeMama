@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.LoginPage"
+             Title="Iniciar Sesión"
+             BackgroundColor="{StaticResource Primary}">
+
+    <ScrollView>
+        <VerticalStackLayout 
+            Padding="30,60"
+            Spacing="25"
+            VerticalOptions="Center">
+
+            <Label 
+                Text="Sabores de Mamá"
+                FontSize="32"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="White"
+                Margin="0,0,0,40" />
+
+            <Frame 
+                Padding="20"
+                CornerRadius="15"
+                BackgroundColor="{StaticResource White}"
+                BorderColor="{StaticResource PastelLavender}"
+                HasShadow="True">
+                <VerticalStackLayout Spacing="20">
+                    <Label 
+                        Text="Iniciar Sesión"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Margin="0,0,0,10" />
+
+                    <Entry 
+                        x:Name="UsernameEntry"
+                        Placeholder="Usuario"
+                        Text="admin" />
+
+                    <Entry 
+                        x:Name="PasswordEntry"
+                        Placeholder="Contraseña"
+                        IsPassword="True"
+                        Text="admin123" />
+
+                    <Button 
+                        x:Name="LoginButton"
+                        Text="Iniciar Sesión"
+                        Clicked="OnLoginClicked"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        CornerRadius="5"
+                        Padding="0,15" />
+
+                    <Label 
+                        x:Name="ErrorLabel"
+                        TextColor="{StaticResource PastelPink}"
+                        IsVisible="False"
+                        HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="5">
+                <Label Text="¿No tienes cuenta?" TextColor="White" VerticalOptions="Center"/>
+                <Label Text="Regístrate aquí" 
+                       TextColor="{StaticResource PastelYellow}" 
+                       FontAttributes="Bold"
+                       TextDecorations="Underline"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
+            <Label 
+                Text="Usuario Admin: admin / admin123&#10;Usuario Cliente: cliente / cliente123"
+                FontSize="12"
+                TextColor="White"
+                HorizontalOptions="Center"
+                Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

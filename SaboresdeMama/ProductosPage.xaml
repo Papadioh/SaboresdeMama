@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SaboresdeMama.Models"
+             x:Class="SaboresdeMama.ProductosPage"
+             Title="Productos Disponibles">
+
+    <ContentPage.BackgroundColor>
+        <Color>#FFFEF9</Color>
+    </ContentPage.BackgroundColor>
+
+    <Grid RowDefinitions="Auto, *" RowSpacing="10">
+        <Grid Grid.Row="0" Padding="10,0,10,0" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <SearchBar x:Name="ProductoSearchBar"
+                        Grid.Column="0"
+                        Placeholder="Buscar producto..."
+                        SearchButtonPressed="OnSearchButtonPressed"
+                        TextChanged="OnSearchTextChanged" />
+
+            <Button x:Name="CarritoButton"
+                    Grid.Column="1"
+                    Text="🛒 Carrito"
+                    WidthRequest="100"
+                    Clicked="OnCarritoClicked"
+                    BackgroundColor="{StaticResource PastelPeach}" 
+                    TextColor="{StaticResource Gray600}" />
+        </Grid>
+
+        <CollectionView x:Name="ProductosCollectionView" Grid.Row="1" Margin="10,0" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Producto">
+                    <Border Stroke="{StaticResource PastelBlue}" StrokeThickness="1" Padding="15" Margin="5" BackgroundColor="{StaticResource White}"
+                            StrokeShape="RoundRectangle 10">
+                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
+
+                            <Image Grid.Column="0" 
+                                   Source="{Binding ImageURL}" 
+                                   Aspect="AspectFill"
+                                   WidthRequest="80"
+                                   HeightRequest="80"
+                                   BackgroundColor="{StaticResource PastelBackground}" 
+                                   VerticalOptions="Center" />
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                <Label Text="{Binding Nombre}" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Gray600}" />
+                                <Label Text="{Binding Descripcion}" MaxLines="2" LineBreakMode="TailTruncation" FontSize="12" TextColor="{StaticResource Gray500}" />
+                                <Label Text="{Binding Precio, StringFormat='Precio: ${0:F2}'}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                                <Label Text="{Binding Stock, StringFormat='Stock disponible: {0}'}" 
+                                       FontSize="14" 
+                                       TextColor="{StaticResource PastelMint}" />
+                                <Label Text="{Binding Categoria}" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource Gray500}" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="5" VerticalOptions="Center">
+                                <Button Text="Ver Detalles" 
+                                        Clicked="OnVerDetallesClicked" 
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="{StaticResource PastelBlue}" 
+                                        TextColor="{StaticResource Gray600}" />
+
+                                <Button Text="Agregar al Carrito" 
+                                        Clicked="OnAgregarAlCarritoClicked" 
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="{StaticResource PastelMint}" 
+                                        TextColor="{StaticResource Gray600}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

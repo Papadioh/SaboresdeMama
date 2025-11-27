@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.RecetarioPage"
+             Title="Recetario">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Grid Grid.Row="0" Padding="10" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <SearchBar x:Name="RecetaSearchBar"
+                       Grid.Column="0"
+                       Placeholder="Buscar receta..."
+                       SearchButtonPressed="OnSearchButtonPressed"
+                       TextChanged="OnSearchTextChanged" />
+
+            <Button x:Name="AddRecetaButton"
+                    Grid.Column="1"
+                    Text="Añadir"
+                    WidthRequest="80"
+                    Clicked="OnAddRecetaClicked" />
+        </Grid>
+
+        <CollectionView x:Name="RecetasCollectionView" Grid.Row="1" Margin="10,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="15" Margin="5" CornerRadius="12" BorderColor="{StaticResource PastelLavender}" BackgroundColor="{StaticResource White}">
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+
+                            <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                <Label Text="{Binding Nombre}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="Ingredientes:" FontAttributes="Italic" />
+                                <Label Text="{Binding Ingredientes}" MaxLines="2" LineBreakMode="TailTruncation" />
+                                <Label Text="Procedimiento:" FontAttributes="Italic" />
+                                <Label Text="{Binding Procedimiento}" MaxLines="2" LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                <Button Text="Ver" 
+                                        Clicked="OnVerClicked" 
+                                        CommandParameter="{Binding .}" />
+
+                                <Button Text="Editar" 
+                                        Clicked="OnEditarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="{StaticResource PastelBlue}" />
+
+                                <Button Text="Borrar" 
+                                        Clicked="OnEliminarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="{StaticResource PastelPink}" />
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>
