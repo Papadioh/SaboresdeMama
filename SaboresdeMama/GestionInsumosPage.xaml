@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaboresdeMama.GestionInsumosPage"
+             Title="Gestión de Insumos">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid Grid.Row="0" Padding="10" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <SearchBar x:Name="InsumoSearchBar"
+                       Grid.Column="0"
+                       Placeholder="Buscar insumo..."
+                       SearchButtonPressed="OnSearchButtonPressed"
+                       TextChanged="OnSearchTextChanged" />
+
+            <Button x:Name="AddInsumoButton"
+                    Grid.Column="1"
+                    Text="Añadir"
+                    WidthRequest="80"
+                    Clicked="OnAddInsumoClicked" />
+        </Grid>
+
+        <CollectionView x:Name="InsumosCollectionView" Grid.Row="1" Margin="10,0">
+            <CollectionView.EmptyView>
+                <Label Text="No hay insumos registrados. Agrega uno para comenzar." 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Center" 
+                       FontSize="16"
+                       TextColor="Gray" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="15" Margin="5" CornerRadius="10" BorderColor="LightGray">
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                <Label Text="{Binding Nombre}" FontSize="18" FontAttributes="Bold" />
+                                <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0:F2}'}" FontSize="14" TextColor="DarkBlue" />
+                                <Label Text="{Binding Unidad, StringFormat='Unidad: {0}'}" FontSize="14" TextColor="Gray" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                <Button Text="Editar" 
+                                        Clicked="OnEditarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White" />
+
+                                <Button Text="Agregar" 
+                                        Clicked="OnAgregarCantidadClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="Green"
+                                        TextColor="White" />
+
+                                <Button Text="Borrar" 
+                                        Clicked="OnEliminarClicked" 
+                                        CommandParameter="{Binding .}" 
+                                        BackgroundColor="Red"
+                                        TextColor="White" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>
+

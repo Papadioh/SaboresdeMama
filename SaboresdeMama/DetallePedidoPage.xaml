@@ -41,6 +41,14 @@
                     <Label x:Name="TotalLabel" FontSize="24" FontAttributes="Bold" TextColor="Green" />
                 </VerticalStackLayout>
             </Frame>
+
+            <Button x:Name="CompletarPedidoButton"
+                    Text="Completar Pedido"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    IsVisible="False"
+                    Clicked="OnCompletarPedidoClicked"
+                    Margin="0,10,0,0" />
         </VerticalStackLayout>
     </ScrollView>
 

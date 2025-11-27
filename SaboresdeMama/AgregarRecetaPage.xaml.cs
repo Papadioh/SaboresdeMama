@@ -3,20 +3,20 @@ using SaboresdeMama.Services;
 
 namespace SaboresdeMama;
 
-// Aseg�rate de que dice "public PARTIAL class"
+// Asegurate de que dice "public PARTIAL class"
 public partial class AgregarRecetaPage : ContentPage
 {
     private readonly DatabaseService _databaseService;
 
     public AgregarRecetaPage(DatabaseService databaseService)
     {
-        InitializeComponent();�
+        InitializeComponent();
         _databaseService = databaseService;
     }
 
     private async void OnGuardarRecetaClicked(object sender, EventArgs e)
     {
-        // Todos estos errores desaparecer�n
+        // Validar campos
         if (string.IsNullOrWhiteSpace(NombreEntry.Text) ||
             string.IsNullOrWhiteSpace(IngredientesEditor.Text) ||
             string.IsNullOrWhiteSpace(ProcedimientoEditor.Text))
@@ -34,7 +34,7 @@ public partial class AgregarRecetaPage : ContentPage
 
         await _databaseService.AddRecetaAsync(nuevaReceta);
 
-        await DisplayAlert("�xito", "Receta guardada correctamente.", "OK");
+        await DisplayAlert("Exito", "Receta guardada correctamente.", "OK");
         await Shell.Current.GoToAsync("..");
     }
 }

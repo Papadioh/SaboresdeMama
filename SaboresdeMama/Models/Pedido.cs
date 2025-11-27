@@ -22,6 +22,8 @@ namespace SaboresdeMama.Models
 
         public string DetallesPedido { get; set; }
 
+        public string RecetaId { get; set; } // ID de la receta asociada al pedido (opcional)
+
         // --- Propiedades Calculadas para el Dashboard ---
 
         public string HoraEntrega => FechaEntrega.ToString("HH:mm");

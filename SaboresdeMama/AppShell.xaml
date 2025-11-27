@@ -49,6 +49,13 @@
             Route="RecetarioPage" />
     </FlyoutItem>
 
+    <FlyoutItem x:Name="GestionInsumosMenu" Title="Inventario de Insumos" IsVisible="False">
+        <ShellContent
+            Title="Inventario de Insumos"
+            ContentTemplate="{DataTemplate local:GestionInsumosPage}"
+            Route="GestionInsumosPage" />
+    </FlyoutItem>
+
     <FlyoutItem x:Name="VentasMenu" Title="Ventas" IsVisible="False">
         <ShellContent
             Title="Ventas"

@@ -28,6 +28,7 @@ namespace SaboresdeMama
             builder.Services.AddTransient<AgregarRecetaPage>();
             builder.Services.AddTransient<RecetaDetallePage>();
             builder.Services.AddTransient<EditarRecetaPage>();
+            builder.Services.AddTransient<GestionInsumosPage>();
 
             builder.Services.AddTransient<VentasPage>();
 

@@ -219,7 +219,8 @@ namespace SaboresdeMama.Services
                     { "FechaCreacion", pedido.FechaCreacion },
                     { "Estado", pedido.Estado ?? "" },
                     { "Total", pedido.Total },
-                    { "DetallesPedido", pedido.DetallesPedido ?? "" }
+                    { "DetallesPedido", pedido.DetallesPedido ?? "" },
+                    { "RecetaId", pedido.RecetaId ?? "" }
                 };
                 await FirebaseService.UpdateDocumentAsync("pedidos", pedido.Id, dict);
             }
@@ -250,7 +251,8 @@ namespace SaboresdeMama.Services
                     { "FechaCreacion", pedido.FechaCreacion },
                     { "Estado", pedido.Estado ?? "" },
                     { "Total", pedido.Total },
-                    { "DetallesPedido", pedido.DetallesPedido ?? "" }
+                    { "DetallesPedido", pedido.DetallesPedido ?? "" },
+                    { "RecetaId", pedido.RecetaId ?? "" }
                 };
                 pedido.Id = await FirebaseService.AddDocumentAsync("pedidos", dict);
             }
@@ -620,7 +622,8 @@ namespace SaboresdeMama.Services
             {
                 { "Nombre", receta.Nombre ?? "" },
                 { "Ingredientes", receta.Ingredientes ?? "" },
-                { "Procedimiento", receta.Procedimiento ?? "" }
+                { "Procedimiento", receta.Procedimiento ?? "" },
+                { "InsumosNecesariosJson", receta.InsumosNecesariosJson ?? "" }
             };
             receta.Id = await FirebaseService.AddDocumentAsync("recetas", dict);
         }
@@ -662,7 +665,8 @@ namespace SaboresdeMama.Services
             {
                 { "Nombre", receta.Nombre ?? "" },
                 { "Ingredientes", receta.Ingredientes ?? "" },
-                { "Procedimiento", receta.Procedimiento ?? "" }
+                { "Procedimiento", receta.Procedimiento ?? "" },
+                { "InsumosNecesariosJson", receta.InsumosNecesariosJson ?? "" }
             };
             await FirebaseService.UpdateDocumentAsync("recetas", receta.Id, dict);
         }
@@ -706,6 +710,267 @@ namespace SaboresdeMama.Services
         {
             await InitializeAsync();
             await FirebaseService.DeleteDocumentAsync("ventas", venta.Id);
+        }
+
+        // ======================================================
+        // ===== MÉTODOS PARA GESTIÓN DE INSUMOS =====
+        // ======================================================
+
+        public async Task AddInsumoAsync(Insumo insumo)
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                insumo.Id = Guid.NewGuid().ToString();
+                insumo.FechaCreacion = DateTime.Now;
+                return;
+            }
+
+            try
+            {
+                insumo.FechaCreacion = DateTime.Now;
+                var dict = new Dictionary<string, object>
+                {
+                    { "Nombre", insumo.Nombre ?? "" },
+                    { "Cantidad", insumo.Cantidad },
+                    { "Unidad", insumo.Unidad ?? "" },
+                    { "FechaCreacion", insumo.FechaCreacion }
+                };
+                insumo.Id = await FirebaseService.AddDocumentAsync("insumos", dict);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error agregando insumo en Firebase: {ex.Message}");
+                if (string.IsNullOrEmpty(insumo.Id))
+                {
+                    insumo.Id = Guid.NewGuid().ToString();
+                }
+                if (insumo.FechaCreacion == default)
+                {
+                    insumo.FechaCreacion = DateTime.Now;
+                }
+            }
+        }
+
+        public async Task<List<Insumo>> GetInsumosAsync()
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                return new List<Insumo>();
+            }
+
+            try
+            {
+                var insumos = await FirebaseService.GetCollectionAsync<Insumo>("insumos");
+                return insumos.OrderBy(i => i.Nombre).ToList();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error obteniendo insumos: {ex.Message}");
+                return new List<Insumo>();
+            }
+        }
+
+        public async Task<Insumo> GetInsumoByIdAsync(string id)
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                return null;
+            }
+
+            try
+            {
+                return await FirebaseService.GetDocumentAsync<Insumo>("insumos", id);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error obteniendo insumo por ID: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<Insumo> GetInsumoByNombreAsync(string nombre)
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                return null;
+            }
+
+            try
+            {
+                var insumos = await FirebaseService.GetCollectionAsync<Insumo>("insumos");
+                return insumos.FirstOrDefault(i => i.Nombre?.ToLower() == nombre?.ToLower());
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error obteniendo insumo por nombre: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task UpdateInsumoAsync(Insumo insumo)
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                return;
+            }
+
+            try
+            {
+                var dict = new Dictionary<string, object>
+                {
+                    { "Nombre", insumo.Nombre ?? "" },
+                    { "Cantidad", insumo.Cantidad },
+                    { "Unidad", insumo.Unidad ?? "" },
+                    { "FechaCreacion", insumo.FechaCreacion }
+                };
+                await FirebaseService.UpdateDocumentAsync("insumos", insumo.Id, dict);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error actualizando insumo: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task DeleteInsumoAsync(Insumo insumo)
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                return;
+            }
+
+            try
+            {
+                await FirebaseService.DeleteDocumentAsync("insumos", insumo.Id);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error eliminando insumo: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> ActualizarCantidadInsumoAsync(string insumoId, double cantidad)
+        {
+            await InitializeAsync();
+
+            if (string.IsNullOrEmpty(insumoId))
+            {
+                System.Diagnostics.Debug.WriteLine("ActualizarCantidadInsumoAsync: insumoId es nulo o vacío");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(FirebaseService.ProjectId) || FirebaseService.ProjectId == "TU_PROJECT_ID")
+            {
+                return false;
+            }
+
+            try
+            {
+                var insumo = await GetInsumoByIdAsync(insumoId);
+                if (insumo != null)
+                {
+                    var cantidadAnterior = insumo.Cantidad;
+                    insumo.Cantidad += cantidad;
+                    if (insumo.Cantidad < 0) insumo.Cantidad = 0;
+                    
+                    System.Diagnostics.Debug.WriteLine($"Cantidad de insumo actualizada: {insumo.Nombre} - Anterior: {cantidadAnterior}, Cambio: {cantidad}, Nuevo: {insumo.Cantidad}");
+                    
+                    await UpdateInsumoAsync(insumo);
+                    return true;
+                }
+                System.Diagnostics.Debug.WriteLine($"ActualizarCantidadInsumoAsync: No se encontró insumo con ID: {insumoId}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error en ActualizarCantidadInsumoAsync: {ex.Message}");
+                return false;
+            }
+        }
+
+        // Verificar si hay suficientes insumos para una receta
+        public async Task<(bool disponible, List<string> insumosFaltantes)> VerificarDisponibilidadInsumosAsync(Receta receta)
+        {
+            await InitializeAsync();
+
+            if (receta == null || receta.InsumosNecesarios == null || receta.InsumosNecesarios.Count == 0)
+            {
+                return (true, new List<string>()); // Si no tiene insumos definidos, se considera disponible
+            }
+
+            var todosInsumos = await GetInsumosAsync();
+            var insumosFaltantes = new List<string>();
+
+            foreach (var insumoReceta in receta.InsumosNecesarios)
+            {
+                var insumo = todosInsumos.FirstOrDefault(i => i.Id == insumoReceta.InsumoId || i.Nombre == insumoReceta.InsumoNombre);
+                
+                if (insumo == null)
+                {
+                    insumosFaltantes.Add($"{insumoReceta.InsumoNombre} (no existe en inventario)");
+                }
+                else if (insumo.Cantidad < insumoReceta.CantidadNecesaria)
+                {
+                    insumosFaltantes.Add($"{insumoReceta.InsumoNombre} (necesita {insumoReceta.CantidadNecesaria} {insumoReceta.Unidad}, hay {insumo.Cantidad} {insumo.Unidad})");
+                }
+            }
+
+            return (insumosFaltantes.Count == 0, insumosFaltantes);
+        }
+
+        // Restar insumos del inventario cuando se completa un pedido
+        public async Task<bool> RestarInsumosDeRecetaAsync(Receta receta)
+        {
+            await InitializeAsync();
+
+            if (receta == null || receta.InsumosNecesarios == null || receta.InsumosNecesarios.Count == 0)
+            {
+                return true; // Si no tiene insumos, no hay nada que restar
+            }
+
+            var todosInsumos = await GetInsumosAsync();
+            var errores = new List<string>();
+
+            foreach (var insumoReceta in receta.InsumosNecesarios)
+            {
+                var insumo = todosInsumos.FirstOrDefault(i => i.Id == insumoReceta.InsumoId || i.Nombre == insumoReceta.InsumoNombre);
+                
+                if (insumo == null)
+                {
+                    errores.Add($"Insumo '{insumoReceta.InsumoNombre}' no encontrado");
+                    continue;
+                }
+
+                if (insumo.Cantidad < insumoReceta.CantidadNecesaria)
+                {
+                    errores.Add($"Insumo '{insumoReceta.InsumoNombre}' no tiene suficiente cantidad");
+                    continue;
+                }
+
+                // Restar la cantidad
+                await ActualizarCantidadInsumoAsync(insumo.Id, -insumoReceta.CantidadNecesaria);
+            }
+
+            if (errores.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine($"Errores al restar insumos: {string.Join(", ", errores)}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

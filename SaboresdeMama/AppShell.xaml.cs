@@ -21,6 +21,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(AgregarProductoPage), typeof(AgregarProductoPage));
         Routing.RegisterRoute(nameof(EditarProductoPage), typeof(EditarProductoPage));
         Routing.RegisterRoute(nameof(DetallePedidoPage), typeof(DetallePedidoPage));
+        Routing.RegisterRoute(nameof(GestionInsumosPage), typeof(GestionInsumosPage));
 
         ConfigurarMenu();
     }
@@ -35,6 +36,7 @@ public partial class AppShell : Shell
                 GestionProductosMenu.IsVisible = true;
                 GestionPedidosMenu.IsVisible = true;
                 RecetasMenu.IsVisible = true;
+                GestionInsumosMenu.IsVisible = true;
                 VentasMenu.IsVisible = true;
                 ProductosMenu.IsVisible = false;
                 CurrentItem = InicioMenu;
@@ -46,6 +48,7 @@ public partial class AppShell : Shell
                 GestionProductosMenu.IsVisible = false;
                 GestionPedidosMenu.IsVisible = false;
                 RecetasMenu.IsVisible = false;
+                GestionInsumosMenu.IsVisible = false;
                 VentasMenu.IsVisible = false;
                 ProductosMenu.IsVisible = true;
                 CurrentItem = ProductosMenu;
